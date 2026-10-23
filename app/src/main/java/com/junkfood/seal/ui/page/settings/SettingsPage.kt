@@ -144,16 +144,7 @@ fun SettingsPage(onNavigateBack: () -> Unit, onNavigateTo: (String) -> Unit) {
                     }
                 }
             }
-            if (!showBatteryHint && showSponsorMessage > 30)
-                item {
-                    PreferencesHintCard(
-                        title = stringResource(id = R.string.sponsor),
-                        icon = Icons.Rounded.VolunteerActivism,
-                        description = stringResource(id = R.string.sponsor_desc),
-                    ) {
-                        onNavigateTo(Route.DONATE)
-                    }
-                }
+
             item {
                 SettingItem(
                     title = stringResource(id = R.string.general_settings),

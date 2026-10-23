@@ -56,16 +56,16 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: github.ref == 'refs/heads/main'
         with:
-          tag_name: v2.0.1
-          name: "One Click Downloader v2.0.1 (Modern Easy UI Update)"
+          tag_name: v2.0.2
+          name: "One Click Downloader v2.0.2 (Clean Rebranded Release)"
           body: |
-            ### ⚡ One Click Downloader v2.0.1 (Modern Easy UI Update)
+            ### ⚡ One Click Downloader v2.0.2 (Clean Rebranded Release)
 
-            #### 🌟 What's New in this Update:
-            - 🎯 **Modern Quick Download Card**: App open karte hi samne bada paste box aur download buttons milenge!
-            - 📋 **1-Click Paste**: Direct clipboard se paste karne ka button.
-            - 🎬 **Simple Choice**: Direct "Download Video (MP4)" aur "Download MP3" buttons - koi confusing codec codes nahi!
-            - ⚡ **Auto-Format**: Complex format selection default me band kar diya gaya hai.
+            #### 🌟 What's New:
+            - ✨ **100% Clean Custom Branding**: Removed all external sponsors and third-party references.
+            - 🌐 **Connected to Official Website**: Linked with https://one-click-downloader.antideploy.app
+            - 🎯 **Modern Quick Download Card**: Prominent paste box with 1-click video & MP3 download.
+            - 🔄 **In-App Auto Update**: Now directly connected to your own GitHub repository.
 
             #### 📥 Download Links:
             - **Universal APK** (Recommended): `OneClickDownloader-*-universal-release.apk`
