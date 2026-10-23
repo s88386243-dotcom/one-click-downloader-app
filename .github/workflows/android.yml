@@ -56,20 +56,21 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: github.ref == 'refs/heads/main'
         with:
-          tag_name: v2.0.2
-          name: "One Click Downloader v2.0.2 (Clean Rebranded Release)"
+          tag_name: v2.0.3
+          name: "One Click Downloader v2.0.3 (Clean Spacious UI & Rebranded)"
           body: |
-            ### ⚡ One Click Downloader v2.0.2 (Clean Rebranded Release)
+            ### ⚡ One Click Downloader v2.0.3 (Clean Spacious UI & Rebranded)
 
             #### 🌟 What's New:
+            - 📱 **Spacious Download Buttons**: Enlarged video and MP3 buttons with clear labels and icons, fixing any text clipping.
             - ✨ **100% Clean Custom Branding**: Removed all external sponsors and third-party references.
             - 🌐 **Connected to Official Website**: Linked with https://one-click-downloader.antideploy.app
             - 🎯 **Modern Quick Download Card**: Prominent paste box with 1-click video & MP3 download.
             - 🔄 **In-App Auto Update**: Now directly connected to your own GitHub repository.
 
             #### 📥 Download Links:
-            - **Universal APK** (Recommended): `OneClickDownloader-*-universal-release.apk`
-            - **ARM64 APK** (Modern phones): `OneClickDownloader-*-arm64-v8a-release.apk`
+            - **Universal APK** (Recommended): `OneClickDownloader-2.0.0-alpha.8-generic-universal-release.apk`
+            - **ARM64 APK** (Modern phones): `OneClickDownloader-2.0.0-alpha.8-generic-arm64-v8a-release.apk`
 
             #### ✨ Features:
             - 🎯 Download Instagram Reels, Stories, Posts & Photos
