@@ -17,6 +17,7 @@
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.AD_ID" />
 
     <queries>
         <intent>
@@ -39,6 +40,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         tools:targetApi="tiramisu">
+        <meta-data
+            android:name="com.startapp.sdk.APPLICATION_ID"
+            android:value="209468455" />
         <activity
             android:name=".CrashReportActivity"
             android:exported="false"

@@ -14,6 +14,7 @@ import com.junkfood.seal.ui.common.SettingsProvider
 import com.junkfood.seal.ui.page.AppEntry
 import com.junkfood.seal.ui.page.downloadv2.configure.DownloadDialogViewModel
 import com.junkfood.seal.ui.theme.SealTheme
+import com.junkfood.seal.util.AdManager
 import com.junkfood.seal.util.PreferenceUtil
 import com.junkfood.seal.util.matchUrlFromSharedText
 import com.junkfood.seal.util.setLanguage
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AdManager.updateActivity(this)
 
         if (Build.VERSION.SDK_INT < 33) {
             runBlocking { setLanguage(PreferenceUtil.getLocaleFromPreference()) }
@@ -86,4 +88,10 @@ class MainActivity : AppCompatActivity() {
         private const val TAG = "MainActivity"
         private var sharedUrlCached = ""
     }
+
+    override fun onResume() {
+        super.onResume()
+        AdManager.updateActivity(this)
+    }
+
 }

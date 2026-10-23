@@ -186,6 +186,8 @@ dependencies {
 
     implementation(libs.mmkv)
 
+    implementation("com.startapp:inapp-sdk:5.2.0")
+
     testImplementation(libs.junit4)
     androidTestImplementation(libs.androidx.test.ext)
     androidTestImplementation(libs.androidx.test.espresso.core)

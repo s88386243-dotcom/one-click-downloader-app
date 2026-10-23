@@ -5,7 +5,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
+import android.content.Intent
 import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.material.icons.outlined.Campaign
+import androidx.compose.material.icons.outlined.Forum
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Language
@@ -61,6 +66,8 @@ const val weblate = "https://github.com/s88386243-dotcom/one-click-downloader-ap
 const val YtdlpRepository = "https://github.com/yt-dlp/yt-dlp"
 private const val githubIssueUrl = "https://github.com/s88386243-dotcom/one-click-downloader-app/issues"
 private const val websiteUrl = "https://one-click-downloader.antideploy.app/"
+private const val telegramChannelUrl = "https://t.me/+pz895xwIR7RjMGFl"
+private const val telegramSupportUrl = "https://t.me/cybergod_990"
 private const val TAG = "AboutPage"
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -111,36 +118,55 @@ fun AboutPage(
             LazyColumn(modifier = Modifier.padding(it)) {
                 item {
                     PreferenceItem(
-                        title = stringResource(R.string.readme),
-                        description = stringResource(R.string.readme_desc),
-                        icon = Icons.Outlined.Description,
+                        title = "Developer",
+                        description = "Sandesh Kumar Maddheshiya",
+                        icon = Icons.Outlined.Person,
                     ) {
-                        openUrl(repoUrl)
+                        openUrl(websiteUrl)
                     }
                 }
                 item {
                     PreferenceItem(
-                        title = stringResource(R.string.release),
-                        description = stringResource(R.string.release_desc),
-                        icon = Icons.Outlined.NewReleases,
+                        title = "Telegram Channel",
+                        description = "Join community: t.me/+pz895xwIR7RjMGFl",
+                        icon = Icons.Outlined.Campaign,
                     ) {
-                        openUrl(releaseURL)
+                        openUrl(telegramChannelUrl)
                     }
                 }
-                /*            item {
-                    PreferenceItem(
-                        title = stringResource(R.string.github_issue),
-                        description = stringResource(R.string.github_issue_desc),
-                        icon = Icons.Outlined.ContactSupport,
-                    ) { openUrl(githubIssueUrl) }
-                }*/
                 item {
                     PreferenceItem(
-                        title = "Website",
+                        title = "Support & Feedback",
+                        description = "Report issue to Admin (@cybergod_990)",
+                        icon = Icons.Outlined.Forum,
+                    ) {
+                        openUrl(telegramSupportUrl)
+                    }
+                }
+                item {
+                    PreferenceItem(
+                        title = "Official Website",
                         description = "https://one-click-downloader.antideploy.app",
                         icon = Icons.Outlined.Language,
                     ) {
                         openUrl(websiteUrl)
+                    }
+                }
+                item {
+                    PreferenceItem(
+                        title = "Share One Click Downloader",
+                        description = "Share app with friends and family",
+                        icon = Icons.Outlined.Share,
+                    ) {
+                        val sendIntent = Intent().apply {
+                            action = Intent.ACTION_SEND
+                            putExtra(
+                                Intent.EXTRA_TEXT,
+                                "Download Instagram Reels, Facebook & YouTube videos in 1-Click with One Click Downloader: https://one-click-downloader.antideploy.app"
+                            )
+                            type = "text/plain"
+                        }
+                        context.startActivity(Intent.createChooser(sendIntent, "Share App"))
                     }
                 }
                 item {

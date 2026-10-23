@@ -66,3 +66,11 @@
 #-keepnames class <1>$$serializer { # -keepnames suffices; class is kept when serializer() is kept.
 #    static <1>$$serializer INSTANCE;
 #}
+
+# Start.io (StartApp) ProGuard Rules
+-keep class com.startapp.** { *; }
+-keep class com.truenet.** { *; }
+-keepattributes Exceptions, InnerClasses, Signature, Deprecated, SourceFile, LineNumberTable, *Annotation*, EnclosingMethod
+-dontwarn android.webkit.JavascriptInterface
+-dontwarn com.startapp.**
+-dontwarn org.jetbrains.annotations.**

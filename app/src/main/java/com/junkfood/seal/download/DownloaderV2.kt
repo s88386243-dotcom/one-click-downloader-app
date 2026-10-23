@@ -19,6 +19,7 @@ import com.junkfood.seal.download.Task.DownloadState.Running
 import com.junkfood.seal.download.Task.RestartableAction.Download
 import com.junkfood.seal.download.Task.RestartableAction.FetchInfo
 import com.junkfood.seal.download.Task.TypeInfo
+import com.junkfood.seal.util.AdManager
 import com.junkfood.seal.util.DownloadUtil
 import com.junkfood.seal.util.FileUtil
 import com.junkfood.seal.util.NotificationUtil
@@ -310,6 +311,7 @@ class DownloaderV2Impl(private val appContext: Context) : DownloaderV2, KoinComp
                     )
                     .onSuccess { pathList ->
                         downloadState = Completed(pathList.firstOrNull())
+                        AdManager.showInterstitial(appContext)
 
                         val text =
                             appContext.getString(
