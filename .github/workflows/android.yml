@@ -58,10 +58,10 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: github.ref == 'refs/heads/main'
         with:
-          tag_name: v2.0.4
-          name: "One Click Downloader v2.0.4 (New 3D Logo, Monetization & Community)"
+          tag_name: v2.0.5
+          name: "One Click Downloader v2.0.5 (New 3D Logo, Monetization & Community)"
           body: |
-            ### ⚡ One Click Downloader v2.0.4
+            ### ⚡ One Click Downloader v2.0.5
 
             #### 🌟 What's New:
             - 🎨 **Trending 3D App Icon**: Replaced default launcher with ultra-modern electric neon 3D squircle logo.
