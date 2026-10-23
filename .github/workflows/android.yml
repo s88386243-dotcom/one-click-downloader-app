@@ -43,7 +43,9 @@ jobs:
         run: ./gradlew assembleGenericRelease --stacktrace
 
       - name: List Generated APKs
-        run: ls -la app/build/outputs/apk/generic/release/
+        run: |
+          cp app/build/outputs/apk/generic/release/*universal*.apk app/build/outputs/apk/generic/release/OneClickDownloader.apk
+          ls -la app/build/outputs/apk/generic/release/
 
       - name: Upload APK Artifacts
         uses: actions/upload-artifact@v4
