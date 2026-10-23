@@ -38,6 +38,18 @@ import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.outlined.Audiotrack
+import androidx.compose.material.icons.outlined.Clear
+import androidx.compose.material.icons.outlined.ContentPaste
+import androidx.compose.material.icons.outlined.VideoLibrary
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.TextButton
+import com.junkfood.seal.util.ToastUtil
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FloatingActionButton
@@ -206,12 +218,28 @@ fun DownloadPageV2(
     val clipboardManager = LocalClipboardManager.current
     val uriHandler = LocalUriHandler.current
 
+    var preferences by remember {
+        mutableStateOf(DownloadUtil.DownloadPreferences.createFromPreferences())
+    }
+
+
+
     DownloadPageImplV2(
         modifier = modifier,
         taskDownloadStateMap = downloader.getTaskStateMap(),
         downloadCallback = {
             view.slightHapticFeedback()
             dialogViewModel.postAction(Action.ShowSheet())
+        },
+        onQuickDownload = { url, audioOnly ->
+            view.slightHapticFeedback()
+            dialogViewModel.postAction(
+                Action.DownloadWithPreset(
+                    urlList = listOf(url),
+                    preferences = preferences.copy(extractAudio = audioOnly),
+                )
+            )
+            ToastUtil.makeToast("Starting download...")
         },
         onMenuOpen = onMenuOpen,
     ) { task, action ->
@@ -250,9 +278,7 @@ fun DownloadPageV2(
         }
     }
 
-    var preferences by remember {
-        mutableStateOf(DownloadUtil.DownloadPreferences.createFromPreferences())
-    }
+
     val sheetValue by dialogViewModel.sheetValueFlow.collectAsStateWithLifecycle()
     val state by dialogViewModel.sheetStateFlow.collectAsStateWithLifecycle()
 
@@ -318,6 +344,7 @@ fun DownloadPageImplV2(
     modifier: Modifier = Modifier,
     taskDownloadStateMap: SnapshotStateMap<Task, Task.State>,
     downloadCallback: () -> Unit = {},
+    onQuickDownload: (String, Boolean) -> Unit = { _, _ -> },
     onMenuOpen: (() -> Unit) = {},
     onActionPost: (Task, UiAction) -> Unit,
 ) {
@@ -434,6 +461,13 @@ fun DownloadPageImplV2(
                             PaddingValues(start = 20.dp, end = 20.dp, bottom = 80.dp),
                     horizontalArrangement = Arrangement.spacedBy(24.dp),
                 ) {
+                    item(span = { GridItemSpan(maxLineSpan) }) {
+                        QuickDownloadCard(
+                            modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
+                            onDownload = onQuickDownload,
+                        )
+                    }
+
                     if (filteredMap.isNotEmpty()) {
                         item(span = { GridItemSpan(maxLineSpan) }) {
                             val videoCount =
@@ -448,6 +482,26 @@ fun DownloadPageImplV2(
                                 onToggleView = { isGridView = !isGridView },
                                 onShowMenu = { context.makeToast("Not implemented yet!") },
                             )
+                        }
+                    } else {
+                        item(span = { GridItemSpan(maxLineSpan) }) {
+                            Column(
+                                modifier = Modifier.fillMaxWidth().padding(top = 16.dp, bottom = 32.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                            ) {
+                                Text(
+                                    text = "Ready to Download",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Medium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
+                                Spacer(Modifier.height(4.dp))
+                                Text(
+                                    text = "Paste any link above to start downloading!",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.outline,
+                                )
+                            }
                         }
                     }
 
@@ -502,14 +556,7 @@ fun DownloadPageImplV2(
                 }
             }
         }
-        if (filteredMap.isEmpty()) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                DownloadQueuePlaceholder(
-                    modifier =
-                        Modifier.fillMaxHeight(0.4f).widthIn(max = 360.dp).align(Alignment.Center)
-                )
-            }
-        }
+
     }
     if (selectedTask != null) {
         val task = selectedTask!!
@@ -607,6 +654,179 @@ fun FABs(modifier: Modifier = Modifier, downloadCallback: () -> Unit = {}) {
             },
             modifier = Modifier.padding(vertical = 12.dp),
         )
+    }
+}
+
+@Composable
+private fun QuickDownloadCard(
+    modifier: Modifier = Modifier,
+    onDownload: (String, Boolean) -> Unit,
+) {
+    var urlText by rememberSaveable { mutableStateOf("") }
+    val clipboardManager = LocalClipboardManager.current
+    val context = LocalContext.current
+
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(20.dp),
+        colors =
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+            ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+    ) {
+        Column(modifier = Modifier.padding(18.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.FileDownload,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(24.dp),
+                )
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    text = "One Click Downloader",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+            }
+
+            Spacer(Modifier.height(6.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = "📸 Instagram",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+                Text(
+                    text = "•",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.outline,
+                )
+                Text(
+                    text = "🎬 YouTube",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+                Text(
+                    text = "•",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.outline,
+                )
+                Text(
+                    text = "📘 Facebook",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            }
+
+            Spacer(Modifier.height(14.dp))
+
+            OutlinedTextField(
+                value = urlText,
+                onValueChange = { urlText = it },
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = {
+                    Text(
+                        text = "Paste video or reel link here...",
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                },
+                singleLine = true,
+                shape = RoundedCornerShape(12.dp),
+                trailingIcon = {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        if (urlText.isNotEmpty()) {
+                            IconButton(onClick = { urlText = "" }) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Clear,
+                                    contentDescription = "Clear",
+                                    modifier = Modifier.size(18.dp),
+                                )
+                            }
+                        }
+                        TextButton(
+                            onClick = {
+                                val clip = clipboardManager.getText()?.text
+                                if (!clip.isNullOrBlank()) {
+                                    urlText = clip.trim()
+                                } else {
+                                    ToastUtil.makeToast("Clipboard is empty!")
+                                }
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.ContentPaste,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp),
+                            )
+                            Spacer(Modifier.width(4.dp))
+                            Text("Paste")
+                        }
+                    }
+                },
+            )
+
+            Spacer(Modifier.height(14.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                Button(
+                    onClick = {
+                        val trimmed = urlText.trim()
+                        if (trimmed.isEmpty()) {
+                            ToastUtil.makeToast("Please paste a video link first!")
+                        } else {
+                            onDownload(trimmed, false)
+                            urlText = ""
+                        }
+                    },
+                    modifier = Modifier.weight(1f).height(46.dp),
+                    shape = RoundedCornerShape(12.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.VideoLibrary,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                    )
+                    Spacer(Modifier.width(6.dp))
+                    Text(text = "Download Video", fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                }
+
+                FilledTonalButton(
+                    onClick = {
+                        val trimmed = urlText.trim()
+                        if (trimmed.isEmpty()) {
+                            ToastUtil.makeToast("Please paste a link first!")
+                        } else {
+                            onDownload(trimmed, true)
+                            urlText = ""
+                        }
+                    },
+                    modifier = Modifier.weight(1f).height(46.dp),
+                    shape = RoundedCornerShape(12.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Audiotrack,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                    )
+                    Spacer(Modifier.width(6.dp))
+                    Text(text = "Download MP3", fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                }
+            }
+        }
     }
 }
 

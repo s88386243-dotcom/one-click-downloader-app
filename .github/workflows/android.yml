@@ -56,16 +56,20 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: github.ref == 'refs/heads/main'
         with:
-          tag_name: v2.0.0
-          name: "One Click Downloader v2.0.0"
+          tag_name: v2.0.1
+          name: "One Click Downloader v2.0.1 (Modern Easy UI Update)"
           body: |
-            ### ⚡ One Click Downloader APK
+            ### ⚡ One Click Downloader v2.0.1 (Modern Easy UI Update)
 
-            A powerful, all-in-one social media downloader for Android (built on the Seal open-source engine).
+            #### 🌟 What's New in this Update:
+            - 🎯 **Modern Quick Download Card**: App open karte hi samne bada paste box aur download buttons milenge!
+            - 📋 **1-Click Paste**: Direct clipboard se paste karne ka button.
+            - 🎬 **Simple Choice**: Direct "Download Video (MP4)" aur "Download MP3" buttons - koi confusing codec codes nahi!
+            - ⚡ **Auto-Format**: Complex format selection default me band kar diya gaya hai.
 
-            #### 📥 Download Instructions:
-            - **Universal APK** (Recommended - works on all Android phones): `OneClickDownloader-*-universal.apk`
-            - **ARM64 APK** (For modern phones): `OneClickDownloader-*-arm64-v8a.apk`
+            #### 📥 Download Links:
+            - **Universal APK** (Recommended): `OneClickDownloader-*-universal-release.apk`
+            - **ARM64 APK** (Modern phones): `OneClickDownloader-*-arm64-v8a-release.apk`
 
             #### ✨ Features:
             - 🎯 Download Instagram Reels, Stories, Posts & Photos
