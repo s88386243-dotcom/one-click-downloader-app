@@ -42,7 +42,7 @@
         tools:targetApi="tiramisu">
         <meta-data
             android:name="com.startapp.sdk.APPLICATION_ID"
-            android:value="209468455" />
+            android:value="@string/startapp_app_id" />
         <activity
             android:name=".CrashReportActivity"
             android:exported="false"
